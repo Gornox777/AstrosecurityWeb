@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% set back_url = url_for('niveles') %}
+{% block content %}
+
+<div class="info-chip">
+    {% if es_examen %}📝 Examen {{ nivel | capitalize }}{% else %}Nivel {{ nivel | capitalize }}{% endif %}
+</div>
+<h2 style="margin-bottom:6px;">
+    {% if es_examen %}Examen de conocimientos{% else %}Evaluación de conocimientos{% endif %}
+</h2>
+<p style="font-size:13px; margin-bottom: 20px;">
+    {% if es_examen %}
+    Responde las {{ preguntas|length }} preguntas. Necesitas al menos 60% para aprobar.
+    {% else %}
+    Responde las {{ preguntas|length }} preguntas. Necesitas al menos 80% para avanzar.
+    {% endif %}
+</p>
+
+<!-- Barra de progreso sticky -->
+<div class="progreso-wrap">
+    <div class="progreso-info">
+        <span class="progreso-label" id="prog-label">0 de {{ preguntas|length }} respondidas</span>
+        <span class="progreso-pct" id="prog-pct">0%</span>
+    </div>
+    <div class="progreso-bar-bg">
+        <div class="progreso-bar" id="prog-bar" style="width:0%"></div>
+    </div>
+</div>
+
+<form method="POST" action="{{ url_for('resultado') }}" id="quiz-form">
+    {% for pregunta in preguntas %}
+    {% set i = loop.index0 %}
+    <div class="pregunta-box">
+        <div class="pregunta-num">PREGUNTA {{ '%02d'|format(loop.index) }} / {{ '%02d'|format(preguntas|length) }}</div>
+        <div class="pregunta-texto">{{ pregunta.pregunta }}</div>
+        {% for opcion in pregunta.opciones %}
+        <label class="opcion-label">
+            <input type="radio" name="pregunta_{{ i }}" value="{{ opcion }}" required>
+            {{ opcion }}
+        </label>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary" id="btn-finalizar" disabled>
+        Finalizar {% if es_examen %}examen{% else %}evaluación{% endif %}
+    </button>
+</form>
+
+<a href="{{ url_for('niveles') }}" class="btn btn-ghost mt-8">Cancelar y regresar</a>
+
+<script>
+(function(){
+    var total  = {{ preguntas|length }};
+    var radios = document.querySelectorAll('input[type="radio"]');
+    var bar    = document.getElementById('prog-bar');
+    var lbl    = document.getElementById('prog-label');
+    var pct    = document.getElementById('prog-pct');
+    var btn    = document.getElementById('btn-finalizar');
+
+    function update(){
+        var resp = new Set();
+        radios.forEach(function(r){ if(r.checked) resp.add(r.name); });
+        var n = resp.size;
+        var p = Math.round(n / total * 100);
+        bar.style.width   = p + '%';
+        lbl.textContent   = n + ' de ' + total + ' respondidas';
+        pct.textContent   = p + '%';
+        btn.disabled      = (n < total);
+    }
+
+    radios.forEach(function(r){ r.addEventListener('change', update); });
+})();
+</script>
+{% endblock %}

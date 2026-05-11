@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% set back_url = url_for('niveles') %}
+{% block content %}
+
+<div class="resultado-center">
+    <div class="resultado-circle {{ 'aprobado' if aprobado else 'reprobado' }}">
+        {{ pct }}%
+    </div>
+    {% if aprobado %}
+        <h2>{% if es_examen %}Examen superado{% else %}Evaluación superada{% endif %}</h2>
+        <p class="mb-0">Obtuviste {{ aciertos }} de {{ total }} respuestas correctas.
+        {% if not es_examen %}
+            {% if nivel != 'avanzado' %}El siguiente nivel ya está disponible.{% else %}¡Has completado todos los niveles!{% endif %}
+        {% else %}
+            Has aprobado el Examen {{ nivel | capitalize }}.
+        {% endif %}
+        </p>
+    {% else %}
+        <h2>Resultado insuficiente</h2>
+        {% if es_examen %}
+        <p class="mb-0">Obtuviste {{ aciertos }} de {{ total }}. Se requiere al menos el 60% para aprobar el examen.</p>
+        {% else %}
+        <p class="mb-0">Obtuviste {{ aciertos }} de {{ total }}. Se requiere al menos el 80% para avanzar.</p>
+        {% endif %}
+    {% endif %}
+</div>
+
+<div class="divider"></div>
+
+<div class="resultado-msg">
+    {% if aprobado %}
+        Tu desempeño refleja un dominio sólido de los conceptos evaluados.
+        {% if es_examen %}
+            Has demostrado un conocimiento completo del nivel {{ nivel }}. ¡Excelente trabajo!
+        {% else %}
+            Cada conocimiento adquirido refuerza tu capacidad de identificar y prevenir amenazas en el entorno digital.
+            {% if nivel != 'avanzado' %}Puedes continuar con el siguiente nivel cuando lo consideres oportuno.{% endif %}
+        {% endif %}
+    {% else %}
+        Algunos conceptos de este nivel requieren mayor repaso. Te recomendamos revisar el apartado de consejos de seguridad antes de volver a intentarlo. Recuerda que cada intento refuerza tu aprendizaje.
+    {% endif %}
+</div>
+
+<div class="acciones">
+    {% if es_examen %}
+        <a href="{{ url_for('examen', nivel=nivel) }}" class="btn btn-ghost">Reintentar</a>
+        <a href="{{ url_for('niveles') }}" class="btn btn-primary">Ver niveles</a>
+    {% else %}
+        <a href="{{ url_for('verificar_acceso', nivel=nivel) }}" class="btn btn-ghost">Reintentar</a>
+        {% if aprobado and nivel != 'avanzado' %}
+            <a href="{{ url_for('niveles') }}" class="btn btn-primary">Siguiente nivel</a>
+        {% else %}
+            <a href="{{ url_for('niveles') }}" class="btn btn-primary">Ver niveles</a>
+        {% endif %}
+    {% endif %}
+</div>
+
+<a href="{{ url_for('historial') }}" class="btn btn-ghost mt-8">Ver historial de evaluaciones</a>
+<a href="{{ url_for('retroalimentacion') }}" class="btn btn-ghost mt-8">Consejos de seguridad</a>
+
+{% endblock %}

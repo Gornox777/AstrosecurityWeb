@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% set back_url = url_for('inicio') %}
+{% block content %}
+
+<h2>Selecciona un nivel</h2>
+<p style="margin-bottom: 16px;">Obtener al menos el 80% en cada evaluación desbloquea el nivel siguiente. Consigue un 60% o más para desbloquear el Examen del nivel correspondiente.</p>
+
+<!-- Stats -->
+<div class="stats-row" style="margin-bottom: 24px;">
+    <div class="stat-box">
+        <span class="stat-num">3</span>
+        <div class="stat-label">Niveles</div>
+    </div>
+    <div class="stat-box">
+        <span class="stat-num">10</span>
+        <div class="stat-label">Preguntas c/u</div>
+    </div>
+    <div class="stat-box">
+        <span class="stat-num">80%</span>
+        <div class="stat-label">Para avanzar</div>
+    </div>
+</div>
+
+<!-- ── NIVELES NORMALES ─────────────────────────── -->
+<div class="niveles-seccion-titulo">Niveles de práctica</div>
+
+<!-- Nivel Fácil -->
+<a href="{{ url_for('verificar_acceso', nivel='facil') }}" class="nivel-card activo">
+    <div class="nivel-icon verde">🛡️</div>
+    <div class="nivel-info">
+        <div class="nivel-titulo">Nivel Fácil</div>
+        <div class="nivel-desc">Contraseñas, navegación segura y hábitos digitales básicos</div>
+    </div>
+    {% if nivel in ['intermedio', 'avanzado'] %}
+        <span class="nivel-badge badge-done">Completado</span>
+    {% else %}
+        <span class="nivel-badge badge-open">Disponible</span>
+    {% endif %}
+</a>
+
+<!-- Nivel Intermedio -->
+{% if nivel in ['intermedio', 'avanzado'] %}
+<a href="{{ url_for('verificar_acceso', nivel='intermedio') }}" class="nivel-card activo">
+{% else %}
+<div class="nivel-card bloqueado">
+{% endif %}
+    <div class="nivel-icon amarillo">⚡</div>
+    <div class="nivel-info">
+        <div class="nivel-titulo">Nivel Intermedio</div>
+        <div class="nivel-desc">Phishing, malware, VPN y autenticación en dos pasos</div>
+    </div>
+    {% if nivel == 'avanzado' %}
+        <span class="nivel-badge badge-done">Completado</span>
+    {% elif nivel == 'intermedio' %}
+        <span class="nivel-badge badge-open">Disponible</span>
+    {% else %}
+        <span class="nivel-badge badge-lock">🔒 Bloqueado</span>
+    {% endif %}
+{% if nivel in ['intermedio', 'avanzado'] %}
+</a>
+{% else %}
+</div>
+{% endif %}
+
+<!-- Nivel Avanzado -->
+{% if nivel == 'avanzado' %}
+<a href="{{ url_for('verificar_acceso', nivel='avanzado') }}" class="nivel-card activo">
+{% else %}
+<div class="nivel-card bloqueado">
+{% endif %}
+    <div class="nivel-icon rojo">🚀</div>
+    <div class="nivel-info">
+        <div class="nivel-titulo">Nivel Avanzado</div>
+        <div class="nivel-desc">Cifrado, deepfakes, ataques MITM y modelo Zero Trust</div>
+    </div>
+    {% if nivel == 'avanzado' %}
+        <span class="nivel-badge badge-open">Disponible</span>
+    {% else %}
+        <span class="nivel-badge badge-lock">🔒 Bloqueado</span>
+    {% endif %}
+{% if nivel == 'avanzado' %}
+</a>
+{% else %}
+</div>
+{% endif %}
+
+<!-- ── EXÁMENES ─────────────────────────────────── -->
+<div class="niveles-seccion-titulo" style="margin-top: 32px;">Exámenes (40 preguntas)</div>
+<p style="font-size: 13px; margin-bottom: 16px; color: var(--muted);">
+    Obtén al menos 60% en el nivel correspondiente para desbloquear cada examen. Se requiere un 60% para aprobar.
+</p>
+
+<!-- Examen Fácil -->
+{% if usuario.examen_desbloqueado('facil') %}
+<a href="{{ url_for('examen', nivel='facil') }}" class="nivel-card examen-card activo">
+{% else %}
+<div class="nivel-card bloqueado">
+{% endif %}
+    <div class="nivel-icon examen">📝</div>
+    <div class="nivel-info">
+        <div class="nivel-titulo">Examen Fácil</div>
+        <div class="nivel-desc">40 preguntas · Requiere 60% en Nivel Fácil · Necesitas ≥60% para aprobar</div>
+    </div>
+    {% if usuario.examen_desbloqueado('facil') %}
+        <span class="nivel-badge badge-exam">Disponible</span>
+    {% else %}
+        <span class="nivel-badge badge-lock">🔒 Necesitas 60% en Fácil</span>
+    {% endif %}
+{% if usuario.examen_desbloqueado('facil') %}
+</a>
+{% else %}
+</div>
+{% endif %}
+
+<!-- Examen Intermedio -->
+{% if usuario.examen_desbloqueado('intermedio') %}
+<a href="{{ url_for('examen', nivel='intermedio') }}" class="nivel-card examen-card activo">
+{% else %}
+<div class="nivel-card bloqueado">
+{% endif %}
+    <div class="nivel-icon examen">📝</div>
+    <div class="nivel-info">
+        <div class="nivel-titulo">Examen Intermedio</div>
+        <div class="nivel-desc">40 preguntas · Requiere 60% en Nivel Intermedio · Necesitas ≥60% para aprobar</div>
+    </div>
+    {% if usuario.examen_desbloqueado('intermedio') %}
+        <span class="nivel-badge badge-exam">Disponible</span>
+    {% else %}
+        <span class="nivel-badge badge-lock">🔒 Necesitas 60% en Intermedio</span>
+    {% endif %}
+{% if usuario.examen_desbloqueado('intermedio') %}
+</a>
+{% else %}
+</div>
+{% endif %}
+
+<!-- Examen Avanzado -->
+{% if usuario.examen_desbloqueado('avanzado') %}
+<a href="{{ url_for('examen', nivel='avanzado') }}" class="nivel-card examen-card activo">
+{% else %}
+<div class="nivel-card bloqueado">
+{% endif %}
+    <div class="nivel-icon examen">📝</div>
+    <div class="nivel-info">
+        <div class="nivel-titulo">Examen Avanzado</div>
+        <div class="nivel-desc">40 preguntas · Requiere 60% en Nivel Avanzado · Necesitas ≥60% para aprobar</div>
+    </div>
+    {% if usuario.examen_desbloqueado('avanzado') %}
+        <span class="nivel-badge badge-exam">Disponible</span>
+    {% else %}
+        <span class="nivel-badge badge-lock">🔒 Necesitas 60% en Avanzado</span>
+    {% endif %}
+{% if usuario.examen_desbloqueado('avanzado') %}
+</a>
+{% else %}
+</div>
+{% endif %}
+
+{% endblock %}

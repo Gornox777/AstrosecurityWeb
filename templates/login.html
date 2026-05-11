@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0D1B3E">
+    <title>Iniciar sesión — AstroSecurity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-wrap">
+        <div class="auth-header">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="AstroSecurity" class="auth-logo">
+            <h2 style="margin-bottom:4px;">Bienvenido de vuelta</h2>
+            <p style="margin-bottom:0; font-size:14px;">Tu progreso te espera donde lo dejaste.</p>
+        </div>
+
+        {% if error %}
+        <div class="flash-msg flash-error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+            <div class="campo">
+                <label>Correo electrónico</label>
+                <input type="email" name="correo" placeholder="correo@ejemplo.com" required autocomplete="email">
+            </div>
+            <div class="campo">
+                <label>Contraseña</label>
+                <input type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        </form>
+
+        <p class="auth-link">
+            ¿No tienes cuenta? <a href="{{ url_for('registro') }}">Crear cuenta gratis</a>
+        </p>
+    </div>
+</body>
+</html>

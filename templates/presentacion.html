@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0D1B3E">
+    <title>AstroSecurity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar" style="max-width: var(--max-w); margin: 0 auto;">
+        <div class="navbar-logo" style="cursor:default;">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="AstroSecurity" class="navbar-logo-img">
+            <div class="navbar-brand">
+                <span class="navbar-name">AstroSecurity</span>
+                <span class="navbar-slogan">Seguro hasta en las estrellas</span>
+            </div>
+        </div>
+        <div class="navbar-actions">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('inicio') }}" class="nav-btn nav-btn-login">Entrar</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="nav-btn nav-btn-login">Iniciar sesión</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="contenedor" style="margin: 0 auto;">
+
+        <div style="margin-bottom: 32px;">
+            <div class="info-chip">Bienvenido</div>
+            <h2 style="margin-bottom: 8px;">Aprende a protegerte en línea</h2>
+            <p>AstroSecurity es una plataforma de aprendizaje en ciberseguridad. Pon a prueba tus conocimientos con cuestionarios progresivos y descubre cómo proteger tu información en el entorno digital.</p>
+        </div>
+
+        {% set logueado = current_user.is_authenticated %}
+
+        <!-- Nivel Fácil -->
+        {% if logueado %}
+        <a href="{{ url_for('niveles') }}" class="nivel-card activo">
+        {% else %}
+        <a href="{{ url_for('registro') }}" class="nivel-card bloqueado-visual">
+        {% endif %}
+            <div class="nivel-icon verde">🛡️</div>
+            <div class="nivel-info">
+                <div class="nivel-titulo">Nivel Fácil</div>
+                <div class="nivel-desc">Contraseñas, navegación segura y hábitos digitales básicos</div>
+            </div>
+            {% if not logueado %}<span class="nivel-badge badge-lock">🔒 Crear cuenta</span>{% endif %}
+        </a>
+
+        <!-- Nivel Intermedio -->
+        <div class="nivel-card bloqueado-visual" onclick="{% if logueado %}window.location='{{ url_for('niveles') }}'{% else %}window.location='{{ url_for('registro') }}'{% endif %}">
+            <div class="nivel-icon amarillo">⚡</div>
+            <div class="nivel-info">
+                <div class="nivel-titulo">Nivel Intermedio</div>
+                <div class="nivel-desc">Phishing, malware, VPN y autenticación en dos pasos</div>
+            </div>
+            <span class="nivel-badge badge-lock">🔒 {% if logueado %}Bloqueado{% else %}Crear cuenta{% endif %}</span>
+        </div>
+
+        <!-- Nivel Avanzado -->
+        <div class="nivel-card bloqueado-visual" onclick="{% if logueado %}window.location='{{ url_for('niveles') }}'{% else %}window.location='{{ url_for('registro') }}'{% endif %}">
+            <div class="nivel-icon rojo">🚀</div>
+            <div class="nivel-info">
+                <div class="nivel-titulo">Nivel Avanzado</div>
+                <div class="nivel-desc">Cifrado, deepfakes, ataques MITM y modelo Zero Trust</div>
+            </div>
+            <span class="nivel-badge badge-lock">🔒 {% if logueado %}Bloqueado{% else %}Crear cuenta{% endif %}</span>
+        </div>
+
+        {% if not logueado %}
+        <div style="text-align:center; margin-top: 24px;">
+            <a href="{{ url_for('registro') }}" class="btn btn-primary" style="max-width:320px; margin:0 auto 12px;">
+                Crear cuenta gratis
+            </a>
+            <p style="font-size:13px; margin-bottom:0;">
+                ¿Ya tienes cuenta? <a href="{{ url_for('login') }}" style="color:var(--cyan); text-decoration:none;">Inicia sesión</a>
+            </p>
+        </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>

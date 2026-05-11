@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0D1B3E">
+    <title>AstroSecurity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% block body %}
+    <nav class="navbar">
+        <a href="{{ url_for('inicio') }}" class="navbar-logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="AstroSecurity" class="navbar-logo-img">
+            <div class="navbar-brand">
+                <span class="navbar-name">AstroSecurity</span>
+                <span class="navbar-slogan">Seguro hasta en las estrellas</span>
+            </div>
+        </a>
+        <div class="navbar-actions">
+            {% if back_url is defined and back_url %}
+                <a href="{{ back_url }}" class="nav-btn nav-btn-back">Regresar</a>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+                <span class="nav-user">{{ current_user.nombre }}</span>
+                <a href="{{ url_for('logout') }}" class="nav-btn">Salir</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="contenedor">
+        {% block content %}{% endblock %}
+    </div>
+    {% endblock %}
+</body>
+</html>

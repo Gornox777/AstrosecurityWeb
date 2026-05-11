@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% set back_url = url_for('inicio') %}
+{% block content %}
+
+<div class="info-chip">Centro de ayuda</div>
+<h2 style="margin-bottom: 8px;">Soporte técnico</h2>
+<p style="margin-bottom: 28px;">¿Encontraste un problema o tienes alguna duda? Aquí te explicamos cómo funciona la plataforma y cómo puedes contactarnos.</p>
+
+<!-- ── Cómo funciona ───────────────────────────── -->
+<div class="card" style="margin-bottom: 12px;">
+    <div class="info-chip" style="margin-bottom: 14px;">¿Cómo funciona AstroSecurity?</div>
+    <ul class="tips-list" style="margin-bottom: 0;">
+        <li>
+            <div class="tip-bullet"></div>
+            <div><strong style="color:var(--white);">Crea tu cuenta</strong> — Regístrate con correo y contraseña. Tu progreso queda vinculado a tu cuenta y se sincroniza en todos tus dispositivos.</div>
+        </li>
+        <li>
+            <div class="tip-bullet"></div>
+            <div><strong style="color:var(--white);">Niveles progresivos</strong> — Empieza en el Nivel Fácil (10 preguntas). Al obtener ≥80% desbloqueas el Nivel Intermedio y luego el Avanzado.</div>
+        </li>
+        <li>
+            <div class="tip-bullet"></div>
+            <div><strong style="color:var(--white);">Exámenes completos</strong> — Consigue ≥60% en cualquier nivel para desbloquear su Examen de 40 preguntas. Los exámenes se aprueban también con ≥60%.</div>
+        </li>
+        <li>
+            <div class="tip-bullet"></div>
+            <div><strong style="color:var(--white);">Historial guardado</strong> — Cada evaluación queda registrada con fecha, nivel, puntaje y resultado en tu historial personal.</div>
+        </li>
+        <li>
+            <div class="tip-bullet"></div>
+            <div><strong style="color:var(--white);">Acceso multiplataforma</strong> — Puedes acceder desde celular, tablet, laptop o computadora de escritorio. La interfaz se adapta automáticamente.</div>
+        </li>
+    </ul>
+</div>
+
+<!-- ── Preguntas frecuentes ───────────────────── -->
+<div class="card" style="margin-bottom: 24px;">
+    <div class="info-chip" style="margin-bottom: 14px;">Preguntas frecuentes</div>
+    <div class="faq-item">
+        <div class="faq-pregunta" onclick="toggleFaq(this)">
+            <span>¿Olvidé mi contraseña, qué hago?</span>
+            <span class="faq-icon">＋</span>
+        </div>
+        <div class="faq-respuesta">
+            Por el momento no contamos con recuperación automática de contraseña. Si olvidaste la tuya, envíanos un reporte indicando tu correo registrado y te ayudaremos a recuperar tu cuenta manualmente.
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-pregunta" onclick="toggleFaq(this)">
+            <span>¿Mi progreso se guarda automáticamente?</span>
+            <span class="faq-icon">＋</span>
+        </div>
+        <div class="faq-respuesta">
+            Sí. Cada vez que completas una evaluación, tu resultado se guarda de inmediato en la base de datos vinculada a tu cuenta. No necesitas hacer nada adicional.
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-pregunta" onclick="toggleFaq(this)">
+            <span>¿Puedo repetir un nivel ya completado?</span>
+            <span class="faq-icon">＋</span>
+        </div>
+        <div class="faq-respuesta">
+            Sí, todos los niveles desbloqueados pueden repetirse las veces que quieras. Las preguntas se seleccionan aleatoriamente de un banco de 40 por nivel, por lo que cada intento puede ser diferente.
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-pregunta" onclick="toggleFaq(this)">
+            <span>¿Por qué no puedo ver el Examen de un nivel?</span>
+            <span class="faq-icon">＋</span>
+        </div>
+        <div class="faq-respuesta">
+            Los exámenes se desbloquean al obtener al menos 60% en el nivel correspondiente. Si aún no lo has alcanzado, sigue practicando el nivel normal hasta superar ese umbral.
+        </div>
+    </div>
+    <div class="faq-item" style="border-bottom: none;">
+        <div class="faq-pregunta" onclick="toggleFaq(this)">
+            <span>¿Los datos de mi cuenta están seguros?</span>
+            <span class="faq-icon">＋</span>
+        </div>
+        <div class="faq-respuesta">
+            Tu contraseña se almacena cifrada (nunca en texto plano) y tu información personal no se comparte con terceros. La comunicación con el servidor utiliza HTTPS en producción.
+        </div>
+    </div>
+</div>
+
+<!-- ── Formulario de reporte ──────────────────── -->
+<div class="info-chip" style="margin-bottom: 14px;">📬 Reportar un problema</div>
+<p style="font-size: 14px; margin-bottom: 20px;">
+    Completa el formulario y se abrirá tu aplicación de correo con el reporte listo para enviar a
+    <strong style="color: var(--cyan);">astrosecurityincorporation@gmail.com</strong>.
+    También puedes escribirnos directamente a ese correo.
+</p>
+
+<div class="card" style="margin-bottom: 12px;">
+    <div class="campo">
+        <label>Tipo de problema</label>
+        <select id="tipo-problema">
+            <option value="">Selecciona una categoría…</option>
+            <option value="Error en una pregunta">Error en una pregunta o respuesta incorrecta</option>
+            <option value="Problema de inicio de sesión">Problema con inicio de sesión o cuenta</option>
+            <option value="Progreso no guardado">Progreso no se está guardando</option>
+            <option value="Problema visual o de diseño">Problema visual o de diseño en pantalla</option>
+            <option value="Examen no desbloqueado">Examen no se desbloquea correctamente</option>
+            <option value="Error de carga o rendimiento">Error de carga o rendimiento lento</option>
+            <option value="Otro problema">Otro problema</option>
+        </select>
+    </div>
+    <div class="campo">
+        <label>Nivel o sección donde ocurrió (opcional)</label>
+        <input type="text" id="seccion-error" placeholder="Ej. Nivel Intermedio, Pregunta 7, Historial…">
+    </div>
+    <div class="campo">
+        <label>Describe el problema con detalle</label>
+        <textarea id="descripcion-error" placeholder="Explica qué pasó, qué esperabas que pasara y en qué dispositivo/navegador ocurrió…" style="min-height: 120px;"></textarea>
+    </div>
+
+    <button class="btn btn-primary" onclick="enviarReporte()" style="margin-top: 4px;">
+        ✉️ Abrir correo con el reporte
+    </button>
+</div>
+
+<div class="card" style="border-color: rgba(0,200,224,0.2); margin-bottom: 24px;">
+    <p style="font-size: 13px; color: var(--muted); margin-bottom: 0; line-height: 1.7;">
+        <strong style="color: var(--cyan);">Correo directo:</strong>
+        <a href="mailto:astrosecurityincorporation@gmail.com" style="color: var(--cyan); text-decoration: none; word-break: break-all;">
+            astrosecurityincorporation@gmail.com
+        </a><br>
+        Respondemos en un plazo máximo de <strong style="color: var(--white);">48 horas hábiles</strong>.
+        Para una atención más rápida, incluye el mayor detalle posible en tu reporte.
+    </p>
+</div>
+
+<style>
+/* ── FAQ Accordion ─── */
+.faq-item {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+}
+.faq-pregunta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    gap: 12px;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+.faq-pregunta:hover { color: var(--cyan); }
+.faq-icon {
+    font-size: 18px;
+    color: var(--cyan);
+    flex-shrink: 0;
+    line-height: 1;
+    transition: transform 0.2s;
+}
+.faq-item.abierto .faq-icon { transform: rotate(45deg); }
+.faq-respuesta {
+    display: none;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    padding-bottom: 14px;
+}
+.faq-item.abierto .faq-respuesta { display: block; }
+
+/* ── Select ─── */
+select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300C8E0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+}
+select:focus { border-color: rgba(0,200,224,0.45); box-shadow: 0 0 0 3px rgba(0,200,224,0.07); }
+select option { background: #0a1530; color: var(--white); }
+</style>
+
+<script>
+function toggleFaq(el) {
+    var item = el.parentElement;
+    var abierto = item.classList.contains('abierto');
+    // Cerrar todos
+    document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('abierto'); });
+    // Abrir el clickeado (si estaba cerrado)
+    if (!abierto) item.classList.add('abierto');
+}
+
+function enviarReporte() {
+    var tipo        = document.getElementById('tipo-problema').value;
+    var seccion     = document.getElementById('seccion-error').value.trim();
+    var descripcion = document.getElementById('descripcion-error').value.trim();
+
+    if (!tipo) {
+        alert('Por favor selecciona el tipo de problema antes de enviar.');
+        return;
+    }
+    if (!descripcion) {
+        alert('Por favor describe el problema antes de enviar.');
+        return;
+    }
+
+    var usuario = "{{ current_user.nombre | e }}";
+    var correo  = "{{ current_user.correo | e }}";
+    var fecha   = new Date().toLocaleString('es-MX', { dateStyle: 'long', timeStyle: 'short' });
+
+    var asunto = '[AstroSecurity] Reporte: ' + tipo;
+
+    var cuerpo =
+        'Reporte de error — AstroSecurity\n' +
+        '══════════════════════════════════\n\n' +
+        'Usuario: ' + usuario + '\n' +
+        'Correo: ' + correo + '\n' +
+        'Fecha: ' + fecha + '\n\n' +
+        '── Tipo de problema ──\n' +
+        tipo + '\n\n' +
+        (seccion ? '── Sección / nivel afectado ──\n' + seccion + '\n\n' : '') +
+        '── Descripción detallada ──\n' +
+        descripcion + '\n\n' +
+        '══════════════════════════════════\n' +
+        'Enviado desde la sección de Soporte de AstroSecurity.';
+
+    var mailto =
+        'mailto:astrosecurityincorporation@gmail.com' +
+        '?subject=' + encodeURIComponent(asunto) +
+        '&body='    + encodeURIComponent(cuerpo);
+
+    window.location.href = mailto;
+}
+</script>
+
+{% endblock %}
