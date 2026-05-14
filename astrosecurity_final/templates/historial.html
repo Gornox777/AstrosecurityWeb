@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% set back_url = url_for('inicio') %}
+{% block content %}
+
+<h2>Historial de evaluaciones</h2>
+<p style="margin-bottom: 24px;">Registro de todos tus intentos guardados en tu cuenta.</p>
+
+{% if registros %}
+<div class="card" style="padding: 0; overflow: hidden;">
+    <table class="historial-tabla">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nivel</th>
+                <th>Resultado</th>
+                <th>Puntaje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros %}
+            <tr>
+                <td class="muted">{{ r.fecha.strftime('%d/%m/%Y') }}</td>
+                <td>{{ r.nivel }}</td>
+                <td>
+                    {% if r.aprobado %}
+                        <span class="badge-aprobado">✓ Aprobado</span>
+                    {% else %}
+                        <span class="badge-reprobado">✗ Reprobado</span>
+                    {% endif %}
+                </td>
+                <td>{{ r.aciertos }}/{{ r.total }} · {{ r.pct }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="historial-empty">
+    <p>Aún no has completado ninguna evaluación.<br>¡Comienza ahora!</p>
+    <a href="{{ url_for('niveles') }}" class="btn btn-primary" style="max-width: 240px; margin: 0 auto;">Ir a los niveles</a>
+</div>
+{% endif %}
+
+{% endblock %}

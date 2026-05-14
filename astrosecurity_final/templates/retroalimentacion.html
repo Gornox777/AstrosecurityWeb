@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% set back_url = url_for('inicio') %}
+{% block content %}
+
+<div class="info-chip">Buenas practicas</div>
+<h2>Consejos de seguridad digital</h2>
+<p>Incorpora estos habitos para fortalecer tu proteccion en el entorno digital de forma sostenida.</p>
+
+<ul class="tips-list">
+    <li><div class="tip-bullet"></div>Utiliza contrasenas extensas que combinen letras, numeros y simbolos. Evita reutilizar la misma clave en distintos servicios.</li>
+    <li><div class="tip-bullet"></div>Activa la autenticacion en dos pasos en todas las cuentas que lo permitan, priorizando aplicaciones de autenticacion sobre el SMS.</li>
+    <li><div class="tip-bullet"></div>Desconfia de mensajes que generan urgencia, solicitan datos personales o contienen enlaces inesperados, independientemente del remitente aparente.</li>
+    <li><div class="tip-bullet"></div>Evita realizar operaciones sensibles en redes WiFi publicas. Si es necesario, emplea una VPN de confianza.</li>
+    <li><div class="tip-bullet"></div>Mantén actualizado el sistema operativo, las aplicaciones y el firmware de tus dispositivos de red.</li>
+    <li><div class="tip-bullet"></div>Realiza copias de seguridad periodicas de tus archivos en ubicaciones independientes del dispositivo principal.</li>
+    <li><div class="tip-bullet"></div>Revisa y limita los permisos concedidos a las aplicaciones instaladas en tus dispositivos moviles.</li>
+    <li><div class="tip-bullet"></div>Emplea un gestor de contrasenas reconocido en lugar de almacenarlas en texto plano o en papel.</li>
+    <li><div class="tip-bullet"></div>Verifica la autenticidad del dominio antes de ingresar credenciales en cualquier sitio web.</li>
+    <li><div class="tip-bullet"></div>Desconecta el Bluetooth y la ubicacion cuando no los estes utilizando activamente.</li>
+</ul>
+
+<a href="{{ url_for('niveles') }}" class="btn btn-primary">Ir a los cuestionarios</a>
+<a href="{{ url_for('inicio') }}" class="btn btn-ghost mt-8">Regresar al inicio</a>
+
+{% endblock %}

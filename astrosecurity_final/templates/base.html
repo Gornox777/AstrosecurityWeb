@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <!-- PWA principal -->
+    <meta name="theme-color" content="#0D1B3E">
+    <meta name="application-name" content="AstroSecurity">
+    <meta name="description" content="Seguro hasta en las estrellas — Aprende ciberseguridad con cuestionarios interactivos">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- iOS: necesario para que se comporte como app al agregar al homescreen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AstroSecurity">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon-180.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='img/icon-152.png') }}">
+
+    <!-- Favicon estándar -->
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/icon-96.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/icon-192.png') }}">
+
+    <!-- Windows / Android Chrome tile -->
+    <meta name="msapplication-TileColor" content="#0D1B3E">
+    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='img/icon-144.png') }}">
+
+    <title>AstroSecurity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% block body %}
+    <nav class="navbar">
+        <a href="{{ url_for('inicio') }}" class="navbar-logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="AstroSecurity" class="navbar-logo-img">
+            <div class="navbar-brand">
+                <span class="navbar-name">AstroSecurity</span>
+                <span class="navbar-slogan">Seguro hasta en las estrellas</span>
+            </div>
+        </a>
+        <div class="navbar-actions">
+            {% if back_url is defined and back_url %}
+                <a href="{{ back_url }}" class="nav-btn nav-btn-back">Regresar</a>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+                <span class="nav-user">{{ current_user.nombre }}</span>
+                <button class="nav-btn nav-btn-danger"
+                    onclick="document.getElementById('modal-cerrar-sesion').classList.add('activo')">
+                    Cerrar sesion
+                </button>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="contenedor">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Modal de confirmacion de cierre de sesion -->
+    {% if current_user.is_authenticated %}
+    <div class="modal-overlay" id="modal-cerrar-sesion">
+        <div class="modal-box modal-box-sm">
+            <div class="modal-confirm-icon">&#128274;</div>
+            <h2 style="text-align:center; font-size:18px; margin-bottom:8px;">Cerrar sesion</h2>
+            <p style="text-align:center; font-size:14px; margin-bottom:24px;">
+                Tu progreso y evaluaciones quedaran guardados.<br>
+                ¿Deseas cerrar tu sesion?
+            </p>
+            <div class="acciones">
+                <button class="btn btn-ghost"
+                    onclick="document.getElementById('modal-cerrar-sesion').classList.remove('activo')">
+                    Cancelar
+                </button>
+                <a href="{{ url_for('logout') }}" class="btn btn-danger">
+                    Si, cerrar sesion
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% endblock %}
+
+    <!-- Registro del Service Worker (PWA) -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .catch(function(err) {
+                    console.log('SW registro fallido:', err);
+                });
+        });
+    }
+    </script>
+</body>
+</html>

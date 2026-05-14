@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% set back_url = url_for('inicio') %}
+{% block content %}
+
+<div class="info-chip">Acerca de AstroSecurity</div>
+<h2 style="margin-bottom: 16px;">Nuestro objetivo</h2>
+
+<div class="card">
+    <p style="margin-bottom: 12px; font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.7;">
+        AstroSecurity nace con la misión de democratizar el conocimiento en ciberseguridad, haciéndolo accesible para cualquier usuario, independientemente de su nivel técnico.
+    </p>
+    <p style="margin-bottom: 0; font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.7;">
+        A través de evaluaciones progresivas en tres niveles de dificultad — fácil, intermedio y avanzado — buscamos que cada persona construya una base sólida de conocimiento que le permita navegar con seguridad en el entorno digital moderno.
+    </p>
+</div>
+
+<div class="card">
+    <h2 style="font-size: 16px; margin-bottom: 12px;">¿Cómo funciona?</h2>
+    <ul class="tips-list">
+        <li><div class="tip-bullet"></div><div>Completa el <strong>Nivel Fácil</strong> con al menos 80% para desbloquear el Nivel Intermedio.</div></li>
+        <li><div class="tip-bullet"></div><div>Avanza al <strong>Nivel Intermedio</strong> y luego al Avanzado siguiendo la misma lógica.</div></li>
+        <li><div class="tip-bullet"></div><div>Obtén <strong>60% o más</strong> en cualquier nivel para desbloquear su Examen completo de 40 preguntas.</div></li>
+        <li><div class="tip-bullet"></div><div>Tu progreso se guarda automáticamente en tu cuenta y está disponible desde cualquier dispositivo.</div></li>
+    </ul>
+</div>
+
+<a href="{{ url_for('niveles') }}" class="btn btn-primary">Ir a los cuestionarios</a>
+
+{% endblock %}
